@@ -19,6 +19,7 @@ export function ModeToggle() {
       size="icon"
       onClick={toggleTheme}
       aria-label="Toggle theme"
+      className="cursor-pointer"
     >
       <Sun className="h-[1.2rem] w-[1.2rem] transition-all dark:hidden" />
       <Moon className="hidden h-[1.2rem] w-[1.2rem] transition-all dark:block" />
