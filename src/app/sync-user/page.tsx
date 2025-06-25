@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
+import Skeleton from "react-loading-skeleton";
 
 export default function SyncUserPage() {
   const { user, isLoaded } = useUser();
@@ -31,11 +32,8 @@ export default function SyncUserPage() {
   }, [user, isLoaded, router]);
 
   return (
-    <main className="mt-70 flex items-center justify-center">
-      <div className="flex justify-center items-center flex-col gap-y-1">
-        <LoaderCircle className="animate-spin text-amber-800 size-10"  />
-        <p className="text-xl animate-pulse">Loading...</p>
-      </div>
+    <main className="mt-15 wrapper">
+      <Skeleton height={100} count={6} className="dark:opacity-5 animate-pulse"/>
     </main>
   );
 }
