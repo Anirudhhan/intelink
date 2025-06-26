@@ -5,8 +5,12 @@ interface PdfListProps {
   id: string;
 }
 
+interface PDFFile {
+  file_name: string;
+}
+
 const PdfList = ({ id }: PdfListProps) => {
-  const [pdfs, setPdfs] = useState<any[]>([]);
+  const [pdfs, setPdfs] = useState<PDFFile[]>([]);
 
   useEffect(() => {
     if (!id) return;
