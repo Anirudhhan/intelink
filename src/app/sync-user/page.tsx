@@ -4,7 +4,6 @@
 import { useUser } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { LoaderCircle } from "lucide-react";
 import Skeleton from "react-loading-skeleton";
 
 export default function SyncUserPage() {

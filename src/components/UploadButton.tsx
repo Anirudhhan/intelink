@@ -10,10 +10,11 @@ import Dropzone from "react-dropzone";
 import { Cloud, File } from "lucide-react";
 import { useState } from "react";
 import { Progress } from "./ui/progress";
-import { resolve } from "path";
 import { toast } from "sonner";
+import { useUser } from "@clerk/nextjs";
 
 const UploadDropZone = () => {
+  const { user } = useUser(); 
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingProgress, setUploadingProgress] = useState(0);
 
@@ -32,6 +33,17 @@ const UploadDropZone = () => {
     return intervel;
   };
 
+  const uploadFile = async (file: File): Promise<Response> => {
+    const formData = new FormData();
+    formData.append("user_id", user!.id);
+    formData.append("file", file);
+
+    return fetch("/api/upload-pdf", {
+      method: "POST",
+      body: formData,
+    });
+  };
+
   return (
     <Dropzone
       multiple={false}
@@ -45,8 +57,9 @@ const UploadDropZone = () => {
 
         const progressIntervel = startSimulatedProgress();
 
-        console.log(acceptedFile[0].type);
-        await new Promise((resolve) => setTimeout(resolve, 100000));
+        await uploadFile(acceptedFile[0]);
+
+        console.log(acceptedFile);
 
         clearInterval(progressIntervel);
         setUploadingProgress(100);
