@@ -62,21 +62,21 @@ const UploadDropZone = () => {
 
         const progressIntervel = startSimulatedProgress();
 
-        // const res = await uploadFile(file[0]);
-        // const json = await res.json();
+        const res = await uploadFile(file[0]);
+        const json = await res.json();
 
-        // if (!res.ok) {
-        //   toast.error(json.error || "Upload failed");
-        //   clearInterval(progressIntervel);
-        //   setIsUploading(false);
-        //   setAcceptedFile(null);
-        //   return;
-        // }
+        if (!res.ok) {
+          toast.error(json.error || "Upload failed");
+          clearInterval(progressIntervel);
+          setIsUploading(false);
+          setAcceptedFile(null);
+          return;
+        }
 
-        // clearInterval(progressIntervel);
-        // setUploadingProgress(100);
-        // setAcceptedFile(null);
-        // router.push(`/dashboard/${json.id}`);
+        clearInterval(progressIntervel);
+        setUploadingProgress(100);
+        setAcceptedFile(null);
+        router.push(`/dashboard/${json.id}`);
       }}
     >
       {({ getRootProps, getInputProps }) => (
