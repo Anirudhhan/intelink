@@ -12,7 +12,7 @@ export default async function Page({ params }: Props) {
 
   if (!user) redirect("/sign-in");
 
-  const { id: fileId } = await params; // ✅ await here
+  const { id: fileId } = await params; 
 
   const { data, error } = await supabase
     .from("files")
