@@ -62,21 +62,21 @@ const UploadDropZone = () => {
 
         const progressIntervel = startSimulatedProgress();
 
-        const res = await uploadFile(file[0]);
-        const json = await res.json();
+        // const res = await uploadFile(file[0]);
+        // const json = await res.json();
 
-        if (!res.ok) {
-          toast.error(json.error || "Upload failed");
-          clearInterval(progressIntervel);
-          setIsUploading(false);
-          setAcceptedFile(null);
-          return;
-        }
+        // if (!res.ok) {
+        //   toast.error(json.error || "Upload failed");
+        //   clearInterval(progressIntervel);
+        //   setIsUploading(false);
+        //   setAcceptedFile(null);
+        //   return;
+        // }
 
-        clearInterval(progressIntervel);
-        setUploadingProgress(100);
-        setAcceptedFile(null);
-        router.push(`/dashboard/${json.id}`);
+        // clearInterval(progressIntervel);
+        // setUploadingProgress(100);
+        // setAcceptedFile(null);
+        // router.push(`/dashboard/${json.id}`);
       }}
     >
       {({ getRootProps, getInputProps }) => (
@@ -105,7 +105,7 @@ const UploadDropZone = () => {
                 <div className="p-2 bg-blue-50 dark:bg-blue-900 grid place-items-center rounded-lg">
                   <File className="h-4 w-4 text-blue-500" />
                 </div>
-                <div className="px-3 py-2 text-sm text-left truncate text-gray-800 dark:text-gray-100">
+                <div className="px-3 py-2 text-sm text-left text-gray-800 dark:text-gray-100 truncate w-50 sm:w-full">
                   {acceptedFile.name}
                 </div>
               </div>
