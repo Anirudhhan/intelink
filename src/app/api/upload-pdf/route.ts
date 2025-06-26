@@ -2,7 +2,6 @@ import supabase from "@/lib/supabase/server-client";
 import { NextRequest, NextResponse } from "next/server";
 import { PDFDocument } from "pdf-lib";
 
-
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -11,7 +10,6 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File;
 
     if (!user_id || !file) {
-      console.log("Missing fields", { user_id, file });
       return NextResponse.json(
         { error: "Missing user_id or file" },
         { status: 400 }
@@ -52,14 +50,18 @@ export async function POST(req: NextRequest) {
     }
 
     // Save to DB
-    const { error: insertError } = await supabase.from("files").insert({
-      user_id,
-      file_name: file.name,
-      file_url: publicUrl,
-      page_count: pageCount,
-    });
+    const { data: insertedFile, error: insertError } = await supabase
+      .from("files")
+      .insert({
+        user_id,
+        file_name: file.name,
+        file_url: publicUrl,
+        page_count: pageCount,
+      })
+      .select("id") // 👈 only select the ID
+      .single(); // 👈 expect a single row
 
-    if (insertError) {
+    if (insertError || !insertedFile) {
       console.error("DB insert error:", insertError);
       return NextResponse.json(
         { error: "Failed to insert metadata" },
@@ -67,7 +69,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json({ success: true, url: publicUrl });
+    return NextResponse.json({ success: true, id: insertedFile.id });
   } catch (err) {
     console.error("Unhandled upload error:", err);
     return NextResponse.json(

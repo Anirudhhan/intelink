@@ -14,9 +14,10 @@ import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 
 const UploadDropZone = () => {
-  const { user } = useUser(); 
+  const { user } = useUser();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingProgress, setUploadingProgress] = useState(0);
+  const [acceptedFile, setAcceptedFile] = useState<File | null>(null);
 
   const startSimulatedProgress = () => {
     setUploadingProgress(0);
@@ -48,21 +49,33 @@ const UploadDropZone = () => {
     <Dropzone
       multiple={false}
       accept={{ "application/pdf": [] }}
-      onDrop={async (acceptedFile, fileRejections) => {
+      onDrop={async (file, fileRejections) => {
+
         if (fileRejections.length > 0) {
           toast.error("Only PDF files are allowed.");
           return;
         }
+        setAcceptedFile(file[0]); 
         setIsUploading(true);
 
         const progressIntervel = startSimulatedProgress();
 
-        await uploadFile(acceptedFile[0]);
+        const res = await uploadFile(file[0]);
+        const json = await res.json();
 
-        console.log(acceptedFile);
+        if (!res.ok) {
+          toast.error(json.error || "Upload failed");
+          clearInterval(progressIntervel);
+          setIsUploading(false);
+          setAcceptedFile(null);
+          return;
+        }
+
+        console.log("result pdf id ", json.id);
 
         clearInterval(progressIntervel);
         setUploadingProgress(100);
+        setAcceptedFile(null);
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
@@ -86,13 +99,13 @@ const UploadDropZone = () => {
             </p>
 
             {/* File info */}
-            {acceptedFiles?.[0] && (
+            {acceptedFile && (
               <div className="mt-4 px-1 w-full max-w-xs flex items-center rounded-md overflow-hidden bg-white dark:bg-neutral-800 shadow-sm border border-zinc-200 dark:border-zinc-700">
                 <div className="p-2 bg-blue-50 dark:bg-blue-900 grid place-items-center rounded-lg">
                   <File className="h-4 w-4 text-blue-500" />
                 </div>
                 <div className="px-3 py-2 text-sm text-left truncate text-gray-800 dark:text-gray-100">
-                  {acceptedFiles[0].name}
+                  {acceptedFile.name}
                 </div>
               </div>
             )}
