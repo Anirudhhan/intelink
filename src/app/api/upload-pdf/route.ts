@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
         file_url: publicUrl,
         page_count: pageCount,
       })
-      .select("id") // 👈 only select the ID
-      .single(); // 👈 expect a single row
+      .select("id")
+      .single(); 
 
     if (insertError || !insertedFile) {
       console.error("DB insert error:", insertError);

@@ -1,3 +1,4 @@
+import PdfList from "@/components/PdfList";
 import UploadButton from "@/components/UploadButton";
 import { currentUser } from "@clerk/nextjs/server";
 import { FileText } from "lucide-react";
@@ -26,6 +27,7 @@ const dashboard = async () => {
         </h2>
         <p className="text-gray-500 dark:text-gray-400">Upload a PDF file to get started</p>
       </div>
+      <PdfList id={user.id}/>
       {/* <Skeleton height={100} count={3} className="dark:opacity-5 animate-pulse"/> */}
     </main>
   );
