@@ -12,12 +12,14 @@ import { useState } from "react";
 import { Progress } from "./ui/progress";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 const UploadDropZone = () => {
   const { user } = useUser();
   const [isUploading, setIsUploading] = useState(false);
   const [uploadingProgress, setUploadingProgress] = useState(0);
   const [acceptedFile, setAcceptedFile] = useState<File | null>(null);
+  const router = useRouter(); 
 
   const startSimulatedProgress = () => {
     setUploadingProgress(0);
@@ -71,11 +73,10 @@ const UploadDropZone = () => {
           return;
         }
 
-        console.log("result pdf id ", json.id);
-
         clearInterval(progressIntervel);
         setUploadingProgress(100);
         setAcceptedFile(null);
+        router.push(`/dashboard/${json.id}`);
       }}
     >
       {({ getRootProps, getInputProps, acceptedFiles }) => (
