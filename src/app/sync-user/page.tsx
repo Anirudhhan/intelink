@@ -21,8 +21,8 @@ export default function SyncUserPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: user.id,
-          first_name: user.firstName,
-          last_name: user.lastName,
+          full_name: `${user.firstName ?? ""} ${user.lastName ?? ""}`,
+          email: user.emailAddresses[0].emailAddress,
         }),
       }).finally(() => {
         router.push("/dashboard");
@@ -32,7 +32,11 @@ export default function SyncUserPage() {
 
   return (
     <main className="mt-15 wrapper">
-      <Skeleton height={100} count={6} className="dark:opacity-5 animate-pulse"/>
+      <Skeleton
+        height={100}
+        count={6}
+        className="dark:opacity-5 animate-pulse"
+      />
     </main>
   );
 }
