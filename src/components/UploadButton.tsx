@@ -79,7 +79,7 @@ const UploadDropZone = () => {
         router.push(`/dashboard/${json.id}`);
       }}
     >
-      {({ getRootProps, getInputProps, acceptedFiles }) => (
+      {({ getRootProps, getInputProps }) => (
         <div
           {...getRootProps()}
           className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg h-64 m-4 flex items-center justify-center cursor-pointer transition-colors dark:hover:border-amber-700 hover:border-amber-700"

@@ -3,7 +3,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { FileText } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
-import Skeleton from "react-loading-skeleton";
+// import Skeleton from "react-loading-skeleton";
 
 const dashboard = async () => {
   const user = await currentUser();
