@@ -43,7 +43,7 @@ const PdfList = ({ id }: PdfListProps) => {
     <section className="mt-10">
       <div className="grid grid-cols-4 items-center gap-4">
         {pdfs.map((pdf, index) => (
-            <PdfListComponent key={index} id={pdf.id} file_name={pdf.file_name} created_at={pdf.created_at}/>
+            <PdfListComponent key={index} id={pdf.id} file_name={pdf.file_name} created_at={pdf.created_at}user_id={pdf.user_id}/>
         ))}
       </div>
         {/* if no pdf list is there */}

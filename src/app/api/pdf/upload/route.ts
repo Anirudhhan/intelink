@@ -1,3 +1,5 @@
+// app/api/pdf/upload/route.ts
+
 import supabase from "@/lib/supabase/server-client";
 import { NextRequest, NextResponse } from "next/server";
 import { PDFDocument } from "pdf-lib";
@@ -17,7 +19,7 @@ export async function POST(req: NextRequest) {
     }
 
     const fileBuffer = Buffer.from(await file.arrayBuffer());
-    const filePath = `${user_id}/${Date.now()}-${file.name}`;
+    const filePath = `${user_id}/${Date.now()}-${file.name}`; // 🔹 Relative path for storage
 
     // Upload to Supabase Storage
     const { error: uploadError } = await supabase.storage
@@ -40,7 +42,7 @@ export async function POST(req: NextRequest) {
       .getPublicUrl(filePath);
     const publicUrl = urlData.publicUrl;
 
-    // PDF page count (optional)
+    // Extract PDF page count
     let pageCount = 0;
     try {
       const pdfDoc = await PDFDocument.load(fileBuffer);
@@ -49,17 +51,18 @@ export async function POST(req: NextRequest) {
       console.error("PDF parsing error:", pdfError);
     }
 
-    // Save to DB
+    // Save metadata to DB
     const { data: insertedFile, error: insertError } = await supabase
       .from("files")
       .insert({
         user_id,
         file_name: file.name,
         file_url: publicUrl,
+        file_path: filePath, 
         page_count: pageCount,
       })
       .select("id")
-      .single(); 
+      .single();
 
     if (insertError || !insertedFile) {
       console.error("DB insert error:", insertError);
