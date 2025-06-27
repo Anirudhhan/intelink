@@ -41,7 +41,7 @@ const UploadDropZone = () => {
     formData.append("user_id", user!.id);
     formData.append("file", file);
 
-    return fetch("/api/upload-pdf", {
+    return fetch("/api/pdf/upload", {
       method: "POST",
       body: formData,
     });
@@ -105,7 +105,8 @@ const UploadDropZone = () => {
                 <div className="p-2 bg-blue-50 dark:bg-blue-900 grid place-items-center rounded-lg">
                   <File className="h-4 w-4 text-blue-500" />
                 </div>
-                <div className="px-3 py-2 text-sm text-left text-gray-800 dark:text-gray-100 truncate w-50 sm:w-full">
+                {/* //TODO: FIX THE truncate */}
+                <div className="px-3 py-2 text-sm text-left text-gray-800 dark:text-gray-100 truncate w-[180px] sm:w-full">
                   {acceptedFile.name}
                 </div>
               </div>
@@ -120,7 +121,7 @@ const UploadDropZone = () => {
                 />
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 text-center">
                   {uploadingProgress < 100 ? (
-                    uploadingProgress < 90 ? (
+                    uploadingProgress < 70 ? (
                       <>Uploading… {uploadingProgress}%</>
                     ) : (
                       <>Finishing up…</>

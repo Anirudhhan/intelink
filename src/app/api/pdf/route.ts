@@ -1,4 +1,4 @@
-// app/api/fetch-pdfs/route.ts
+// app/api/pdf/route.ts
 
 import supabase from "@/lib/supabase/server-client";
 import { NextRequest, NextResponse } from "next/server";
