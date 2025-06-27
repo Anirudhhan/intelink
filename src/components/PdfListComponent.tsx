@@ -10,6 +10,16 @@ import {
 } from "./ui/card";
 import { LoaderCircle, Trash } from "lucide-react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "./ui/alert-dialog"; 
 
 interface PdfListComponentProps extends PDFFile {
   onDelete: () => void;
@@ -25,11 +35,7 @@ const PdfListComponent = ({
   const formattedDate = new Date(created_at);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  console.log(id, formattedDate);
-
   const deletePdf = async () => {
-    const confirmDelete = confirm("Are you sure you want to delete this PDF?");
-    if (!confirmDelete) return;
     setIsDeleting(true);
 
     try {
@@ -63,11 +69,28 @@ const PdfListComponent = ({
         <CardTitle className="truncate">{file_name}</CardTitle>
         <CardDescription>{formattedDate.toLocaleString()}</CardDescription>
         <CardAction>
-          {isDeleting ? (
-            <LoaderCircle className="size-5 text-red-700 animate-spin" />
-          ) : (
-            <Trash className="size-5 hover:text-red-700" onClick={deletePdf} />
-          )}
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button aria-label="Delete PDF">
+                {isDeleting ? (
+                  <LoaderCircle className="size-5 text-red-700 animate-spin" />
+                ) : (
+                  <Trash className="size-5 hover:text-red-700" />
+                )}
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={deletePdf}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </CardAction>
       </CardHeader>
     </Card>
