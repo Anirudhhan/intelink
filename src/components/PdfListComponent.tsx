@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardAction,
@@ -8,18 +8,29 @@ import {
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Trash } from "lucide-react";
+import { LoaderCircle, Trash } from "lucide-react";
 import { toast } from "sonner";
 
+interface PdfListComponentProps extends PDFFile {
+  onDelete: () => void;
+}
 
-const PdfListComponent = ({ id, file_name, created_at, user_id }: PDFFile) => {
+const PdfListComponent = ({
+  id,
+  file_name,
+  created_at,
+  user_id,
+  onDelete,
+}: PdfListComponentProps) => {
   const formattedDate = new Date(created_at);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   console.log(id, formattedDate);
 
   const deletePdf = async () => {
     const confirmDelete = confirm("Are you sure you want to delete this PDF?");
     if (!confirmDelete) return;
+    setIsDeleting(true);
 
     try {
       const res = await fetch("/api/pdf/delete", {
@@ -37,11 +48,12 @@ const PdfListComponent = ({ id, file_name, created_at, user_id }: PDFFile) => {
 
       toast.success("PDF deleted successfully");
 
-      // Optional: Refresh page or call a prop to update state
-      window.location.reload();
+      onDelete();
     } catch (error) {
       console.error("Delete error:", error);
       toast.error("Something went wrong");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -51,7 +63,11 @@ const PdfListComponent = ({ id, file_name, created_at, user_id }: PDFFile) => {
         <CardTitle className="truncate">{file_name}</CardTitle>
         <CardDescription>{formattedDate.toLocaleString()}</CardDescription>
         <CardAction>
-          <Trash className="size-5 hover:text-red-700" onClick={deletePdf} />
+          {isDeleting ? (
+            <LoaderCircle className="size-5 text-red-700 animate-spin" />
+          ) : (
+            <Trash className="size-5 hover:text-red-700" onClick={deletePdf} />
+          )}
         </CardAction>
       </CardHeader>
     </Card>
