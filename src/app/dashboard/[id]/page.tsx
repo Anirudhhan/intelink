@@ -2,9 +2,11 @@
 import { redirect } from "next/navigation";
 import { currentUser } from "@clerk/nextjs/server";
 import supabase from "@/lib/supabase/server-client";
+import PdfRender from "@/components/PdfRender";
+import ChatWrapper from "@/components/ChatWrapper";
 
 interface Props {
-  params: Promise<{ id: string }>; // mark params as Promise
+  params: Promise<{ id: string }>;
 }
 
 export default async function Page({ params }: Props) {
@@ -12,11 +14,11 @@ export default async function Page({ params }: Props) {
 
   if (!user) redirect("/sign-in");
 
-  const { id: fileId } = await params; 
+  const { id: fileId } = await params;
 
   const { data, error } = await supabase
     .from("files")
-    .select("user_id, file_name")
+    .select("user_id, file_name, file_url")
     .eq("id", fileId)
     .single();
 
@@ -24,10 +26,20 @@ export default async function Page({ params }: Props) {
     return redirect("/");
   }
 
+  console.log(data.file_url)
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Welcome to PDF Chat</h1>
-      <p className="text-gray-600 mt-2">File: {data.file_name}</p>
+    <div className="flex-1 justify-between flex flex-col h-[calc(100vh-3.5rem)]">
+      <div className="mx-auto w-full max-w-7xl grow lg:flex xl:px-2">
+        <div className="flex-1 xl:flex">
+          <div className="px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
+            <PdfRender /> 
+          </div>
+        </div>
+        <div className="shrink-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-2 lg:border-t-0">
+          <ChatWrapper />
+        </div>
+      </div>
     </div>
   );
 }

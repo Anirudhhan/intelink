@@ -19,7 +19,8 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "./ui/alert-dialog"; 
+} from "./ui/alert-dialog";
+import { redirect } from "next/navigation";
 
 interface PdfListComponentProps extends PDFFile {
   onDelete: () => void;
@@ -64,7 +65,13 @@ const PdfListComponent = ({
   };
 
   return (
-    <Card className="h-25 cursor-pointer dark:hover:bg-neutral-800 hover:bg-gray-100">
+    <Card
+      className="h-25 cursor-pointer dark:hover:bg-neutral-800 hover:bg-gray-100"
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest("button")) return;
+        redirect(`/dashboard/${id}`);
+      }}
+    >
       <CardHeader>
         <CardTitle className="truncate">{file_name}</CardTitle>
         <CardDescription>{formattedDate.toLocaleString()}</CardDescription>
@@ -75,7 +82,7 @@ const PdfListComponent = ({
                 {isDeleting ? (
                   <LoaderCircle className="size-5 text-red-700 animate-spin" />
                 ) : (
-                  <Trash className="size-5 hover:text-red-700" />
+                  <Trash className="size-5 hover:text-red-700 cursor-pointer" />
                 )}
               </button>
             </AlertDialogTrigger>
