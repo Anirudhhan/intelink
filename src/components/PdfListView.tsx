@@ -1,6 +1,6 @@
 "use client";
 import { FileText } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import PdfListComponent from "./PdfListComponent";
 
@@ -12,7 +12,7 @@ const PdfList = ({ id }: PdfListProps) => {
   const [pdfs, setPdfs] = useState<PDFFile[]>([]);
   const [pdfsIsLoading, setPdfsIsLoading] = useState(true);
 
-  const fetchPDFs = async () => {
+  const fetchPDFs = useCallback(async () => {
     if (!id) return;
 
     try {
@@ -34,11 +34,11 @@ const PdfList = ({ id }: PdfListProps) => {
     } finally {
       setPdfsIsLoading(false);
     }
-  };
+  }, [id]); 
 
   useEffect(() => {
     fetchPDFs();
-  }, [id]);
+  }, [fetchPDFs]); 
 
   return (
     <section className="mt-10">
