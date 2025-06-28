@@ -5,11 +5,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Dropzone from "react-dropzone";
 import { Cloud, File } from "lucide-react";
 import { useState } from "react";
-import { Progress } from "./ui/progress";
+import { Progress } from "../ui/progress";
 import { toast } from "sonner";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";

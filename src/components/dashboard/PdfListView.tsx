@@ -42,7 +42,7 @@ const PdfList = ({ id }: PdfListProps) => {
 
   return (
     <section className="mt-10">
-      <div className="grid sm:grid-cols-4 grid-cols-2 items-center gap-4">
+      <div className="grid sm:grid-cols-4 grid-cols-2 items-center sm:gap-4 gap-2">
         {pdfs.map((pdf, index) => (
           <PdfListComponent
             key={index}

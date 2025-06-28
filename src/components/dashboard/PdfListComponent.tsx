@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "../ui/card";
 import { LoaderCircle, Trash } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -19,7 +19,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "./ui/alert-dialog";
+} from "../ui/alert-dialog";
 import { redirect } from "next/navigation";
 
 interface PdfListComponentProps extends PDFFile {

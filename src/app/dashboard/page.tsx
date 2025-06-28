@@ -1,5 +1,5 @@
-import PdfListView from "@/components/PdfListView";
-import UploadButton from "@/components/UploadButton";
+import PdfListView from "@/components/dashboard/PdfListView";
+import UploadButton from "@/components/dashboard/UploadButton";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import React from "react";

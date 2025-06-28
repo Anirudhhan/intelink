@@ -2,15 +2,20 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export default function Home() {
+  const user = currentUser();
+  if (user != null) {
+    redirect("/dashboard");
+  }
+  
   return (
     <>
       <main className="wrapper mb-12 mt-10 flex flex-col items-center justify-center text-center">
         <div className="mx-auto mb-4 flex max-w-fit items-center justify-center space-x-2 overflow-hidden rounded-full border border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur transition-all hover:border-gray-300 hover:bg-white/50">
-          <p className="text-sm font-semibold text-gray-700">
-            Intelink!
-          </p>
+          <p className="text-sm font-semibold text-gray-700">Intelink!</p>
         </div>
         <h1 className="max-w-4xl text-5xl font-bold md:text-6xl lg:text-7xl">
           Chat with your
@@ -18,8 +23,8 @@ export default function Home() {
           in seconds.
         </h1>
         <p className="mt-5 max-w-prose text-zinc-700 sm:text-lg">
-          Intelink allows you to have conversations with any PDF document. Simply
-          upload your file and start asking questions right away.
+          Intelink allows you to have conversations with any PDF document.
+          Simply upload your file and start asking questions right away.
         </p>
 
         <Link
@@ -90,7 +95,8 @@ export default function Home() {
               Start chatting in minutes
             </h2>
             <p className="mt-4 text-lg text-gray-600">
-              Chatting to your PDF files has never been easier than with Intelink.
+              Chatting to your PDF files has never been easier than with
+              Intelink.
             </p>
           </div>
         </div>
